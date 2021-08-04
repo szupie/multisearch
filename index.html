@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Multisearch</title>
+
+		<style>
+			* {
+				box-sizing: border-box;
+			}
+			body {
+				margin: 0;
+			}
+			form {
+				height: 2em;
+				text-align: center;
+			}
+			#results {
+				height: calc(100vh - 2em);
+				display: flex;
+				flex-wrap: wrap;
+			}
+			#results iframe {
+				flex: 1 0 300px;
+			}
+		</style>
+	</head>
+	 
+	<body>
+		<form>
+			<input name="q" id="query" type="text"/>
+			<button type="submit">Search</button>
+		</form>
+		<div id="results"></div>
+	</body>
+
+	<script>
+		const resultsNode = document.getElementById('results');
+		
+		const params = (new URL(document.location)).searchParams;
+		const query = params.get('q');
+		const engines = params.getAll('engine');
+
+		for (const engine of engines) {
+			const iframe = document.createElement('iframe');
+			iframe.src = engine.replace('%s', query);
+			resultsNode.appendChild(iframe);
+		}
+	</script>
+</html>
