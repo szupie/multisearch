@@ -2,6 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Multisearch</title>
 
 		<style>
@@ -10,41 +11,100 @@
 			}
 			body {
 				margin: 0;
+				display: flex;
+				flex-direction: column;
+				height: 100vh;
 			}
 			form {
+				flex: 0 0;
+				padding: 4px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				flex-wrap: wrap;
+			}
+			form input[type="text"], form button {
 				height: 2em;
-				text-align: center;
+			}
+			#search-engines {
+				order: 2;
 			}
 			#results {
-				height: calc(100vh - 2em);
+				flex: 1 1 auto;
 				display: flex;
 				flex-wrap: wrap;
 			}
 			#results iframe {
-				flex: 1 0 300px;
+				flex: 1 0 auto;
+				border: 1px solid #000;
+			}
+			#results iframe:not(:last-child) {
+				border-right: none;
 			}
 		</style>
 	</head>
 	 
 	<body>
 		<form>
-			<input name="q" id="query" type="text"/>
-			<button type="submit">Search</button>
+			<div id="search-engines">
+				<label>URL <span class="count">1</span>
+					<input name="engine" type="text"/>
+				</label>
+				<label>URL <span class="count">2</span>
+					<input name="engine" type="text"/>
+				</label>
+				<button id="add" type="button">Add search engine</button>
+			</div>
+			<div id="query">
+				<input name="q" id="query-input" type="text"/>
+				<button type="submit">Search</button>
+			</div>
 		</form>
 		<div id="results"></div>
 	</body>
 
 	<script>
 		const resultsNode = document.getElementById('results');
+		const queryNode = document.getElementById('query-input');
+		const searchEnginesNode = document.getElementById('search-engines');
+		const urlNodes = document.querySelectorAll('input[name="engine"]');
+		const addButtonNode = document.getElementById('add');
 		
 		const params = (new URL(document.location)).searchParams;
 		const query = params.get('q');
 		const engines = params.getAll('engine');
 
-		for (const engine of engines) {
-			const iframe = document.createElement('iframe');
-			iframe.src = engine.replace('%s', query);
-			resultsNode.appendChild(iframe);
+		queryNode.value = query;
+
+		addButtonNode.addEventListener('click', e => {
+			e.preventDefault();
+			createSearchEngineInput();
+		});
+
+		for (let i=0; i<engines.length; i++) {
+			const engineURL = engines[i];
+			if (engineURL) {
+				const urlNode = urlNodes[i] || createSearchEngineInput();
+				urlNode.value = engineURL;
+
+				if (query) {
+					const iframe = document.createElement('iframe');
+					iframe.src = engineURL.replace('%s', query);
+					resultsNode.appendChild(iframe);
+				}
+			}
+		}
+
+		function createSearchEngineInput() {
+			const searchEngineNode = urlNodes[0].parentNode.cloneNode(true);
+			const urlNode = searchEngineNode.querySelector('input');
+
+			const count = searchEnginesNode.childElementCount;
+			searchEngineNode.querySelector('.count').textContent = count;
+			urlNode.value = '';
+
+			searchEnginesNode.insertBefore(searchEngineNode, addButtonNode);
+			return urlNode;
 		}
 	</script>
 </html>
