@@ -17,7 +17,6 @@
 			}
 			form {
 				flex: 0 0;
-				padding: 4px;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
@@ -26,50 +25,60 @@
 			form input[type="text"], form button {
 				height: 2em;
 			}
+			#query, #search-engines, #add {
+				margin: 4px;
+			}
 			#query {
-				margin-right: 1em;
+				margin-right: 2em;
 			}
 			#search-engines {
-				order: 2;
+				order: 3;
+				flex: 1 1 auto;
+				display: flex;
+				flex-wrap: wrap;
+				margin-right: 0;
+				margin-bottom: 0;
 			}
 			#search-engines label {
-				font-size: 12px;
-				font-family: sans-serif;
-				display: inline-block;
+				flex: 1 0 auto;
+				position: relative;
+				height: 30px;
+				min-width: 20em;
+				padding: 1px 3px;
+				border: 1px solid #666;
 				margin-right: 4px;
+				margin-bottom: 4px;
+				font-size: 10px;
+				font-family: sans-serif;
 				color: #666;
 			}
-			#search-engines input {
+			#search-engines input, #add {
+				font-size: 12px;
 				color: #555;
-				width: 20em;
+			}
+			#search-engines input {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				padding: 3px;
+				padding-top: 14px;
+				border: none;
+				background: none;
 			}
 			#add {
-				margin-left: -4px;
-				width: 2em;
+				order: 2;
+				flex: 0 0 auto;
+				padding: 0;
+				margin-bottom: 0;
 				background: none;
 				border: none;
-
-				/* replace text with icon */
-				text-indent: 150%;
-				white-space: nowrap;
-				overflow: hidden;
-				position: relative;
+				text-decoration: underline;
+				cursor: pointer;
 			}
 			#add:focus, #add:hover {
-				border: 1px solid #888;
-			}
-			#add::after {
-				display: block;
-				content: '+';
-				position: absolute;
-				left: 50%;
-				top: 50%;
-				transform: translate(-50%, -50%);
-				text-indent: 0;
-				font-size: 1.5em;
-				font-weight: bold;
-				line-height: 1em;
-				color: #444;
+				color: #000;
 			}
 			#results {
 				flex: 1 1 auto;
@@ -89,6 +98,7 @@
 	 
 	<body>
 		<form>
+			<button id="add" type="button">Add search engine</button>
 			<div id="search-engines">
 				<label>URL <span class="count">1</span>
 					<input name="engine" type="text" placeholder="Enter URL with %s in place of query"/>
@@ -96,7 +106,6 @@
 				<label>URL <span class="count">2</span>
 					<input name="engine" type="text" placeholder="Enter URL with %s in place of query"/>
 				</label>
-				<button id="add" type="button">Add search engine</button>
 			</div>
 			<div id="query">
 				<input name="q" id="query-input" type="text"/>
@@ -141,11 +150,11 @@
 			const searchEngineNode = urlNodes[0].parentNode.cloneNode(true);
 			const urlNode = searchEngineNode.querySelector('input');
 
-			const count = searchEnginesNode.childElementCount;
+			const count = searchEnginesNode.childElementCount + 1;
 			searchEngineNode.querySelector('.count').textContent = count;
 			urlNode.value = '';
 
-			searchEnginesNode.insertBefore(searchEngineNode, addButtonNode);
+			searchEnginesNode.appendChild(searchEngineNode);
 			return urlNode;
 		}
 	</script>
