@@ -86,13 +86,28 @@
 				display: flex;
 				flex-wrap: wrap;
 			}
-			#results iframe {
-				flex: 1 0 auto;
+			#results > div {
+				flex: 1 0 320px;
+				position: relative;
 				border: 1px solid #000;
 				border-bottom: none;
 			}
-			#results iframe:not(:last-child) {
+			#results > div:not(:last-child) {
 				border-right: none;
+			}
+			#results .hint {
+				position: absolute;
+				margin: 4px;
+				font-size: 14px;
+				color: #666;
+			}
+			#results iframe {
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 100%;
+				width: 100%;
+				border: none;
 			}
 			#instructions {
 				max-width: 35em;
@@ -152,9 +167,17 @@
 				hostnames.push(new URL(engineURL).hostname);
 
 				if (query) {
+					const resultNode = document.createElement('div');
 					const iframe = document.createElement('iframe');
+
+					const securePage = document.location.protocol === 'https:';
+					const unsecureSearch = new URL(engineURL).protocol === 'http:';
+					if (securePage && unsecureSearch) {
+						resultNode.innerHTML = `<div class="hint"><p>For security reasons, your browser probably does not allow loading http content on an https page.</p><p>If you need to use an http search URL, download this page and open it in your browser.</p></div>`;
+					}
 					iframe.src = engineURL.replace('%s', query);
-					resultsNode.appendChild(iframe);
+					resultNode.appendChild(iframe);
+					resultsNode.appendChild(resultNode);
 				}
 			}
 		}
