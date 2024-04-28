@@ -5,10 +5,10 @@ To add a search engine / dictionary / lookup tool, enter its results page URL, r
 
 You can save/share sets of searches via the URL. Some example presets: 
 - [look up a French word in Wiktionary and Reverso Context](https://szupie.github.io/multisearch/?engine=https%3A%2F%2Fen.m.wiktionary.org%2Fwiki%2F%25s%23French&engine=https%3A%2F%2Fcontext.reverso.net%2Ftranslation%2Ffrench-english%2F%25s)
-- [look up the pronunciation in Cambridge Dictionary and the etymology on Etymonline.com](https://szupie.github.io/multisearch/?engine=https%3A%2F%2Fdictionary.cambridge.org%2Fpronunciation%2Fenglish%2F%25s%23entryContent&engine=https%3A%2F%2Fwww.etymonline.com%2Fsearch%3Fq%3D%25s)
+- [look up the definition in Merriam-Webster Dictionary and the etymology on Etymonline.com](https://szupie.github.io/multisearch/?engine=https%3A%2F%2Fwww.merriam-webster.com%2Fdictionary%2F%25s&engine=https%3A%2F%2Fwww.etymonline.com%2Fsearch%3Fq%3D%25s)
 
 ## How it works
-This uses iframes to load results from specified URLs. For security reasons, some sites do not allow embedding[1]. This means that **this tool will not work with Google, DuckDuckGo, MDN Web Docs, Forvo, or YouGlish**, just to name a few useful examples.
+This uses iframes to load results from specified URLs. For security reasons, some sites do not allow embedding[1]. This means that **this tool will not work with Google, DuckDuckGo, MDN Web Docs, Cambridge Dictionary, Forvo, or YouGlish**, just to name a few useful examples.
 
 For security reasons, browsers do not allow http pages to be loaded on https pages[2]. If you want to use this with an http site, you can do so by running this locally – just download `index.html` and open it in your browser.
 
